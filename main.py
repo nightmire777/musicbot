@@ -23,6 +23,11 @@ YTDL_OPTIONS = {
     'default_search': 'auto',  # Allows searching by song name, not just URL
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'source_address': '0.0.0.0', # Allows IPv6/IPv4
+    'extractor_args': {
+        'youtube': {
+            'player_client': ['web_creator', 'ios'],  # uses innertube clients
+        }
+    },
 }
 
 # 2. FFmpeg Options: Ensures smooth streaming
