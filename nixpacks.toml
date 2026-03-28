@@ -1,0 +1,9 @@
+[phases.setup]
+nixPkgs = ["ffmpeg"]
+```
+That's it — Railway will automatically install FFmpeg system-wide during build.
+
+## 2. Update your code
+Since FFmpeg will be on the system PATH on Linux, just change your env variable:
+```
+FFMPEG_PATH=ffmpeg
