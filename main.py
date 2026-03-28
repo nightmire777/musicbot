@@ -11,9 +11,8 @@ from dotenv import load_dotenv
 atago = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 load_dotenv()
 
-
-# haha idw use sysytem path how you nai wo ?? 
-FFMPEG_EXECUTABLE_PATH = "C:\\Users\\ayane\Desktop\\atago\\ffmpeg\\bin\\ffmpeg.exe"
+DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
+FFMPEG_EXECUTABLE_PATH =  os.getenv('FFMPEG_PATH', 'ffmpeg')
 
 # 1. YTDL Options: Tells yt-dlp what information to extract
 YTDL_OPTIONS = {
@@ -63,6 +62,16 @@ class YTDLSource(discord.PCMVolumeTransformer):
         
         return cls(discord.FFmpegPCMAudio(filename, executable=FFMPEG_EXECUTABLE_PATH,**FFMPEG_OPTIONS), data=data)
 
+import psutil
+import os
+# measuring bot usage
+@atago.command(name='stats')
+async def stats(ctx):
+    process = psutil.Process(os.getpid())
+    cpu = psutil.cpu_percent(interval=1)
+    ram = process.memory_info().rss / 1024 / 1024  # convert to MB
+    await ctx.send(f"CPU: {cpu}%\nRAM: {ram:.2f} MB")
+    
 global songQueue
 songQueue = []
 
@@ -151,4 +160,4 @@ async def leave(ctx):
 async def hello(ctx):
     await ctx.send("Hello!")
 
-atago.run(os.getenv('DISCORD_BOT_TOKEN'))
+atago.run(DISCORD_BOT_TOKEN)
